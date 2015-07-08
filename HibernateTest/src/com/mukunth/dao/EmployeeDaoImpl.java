@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Session;
 
@@ -160,6 +161,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			session.beginTransaction();
 			System.out.println(employee.toString()+"----------");
 			//employee.setCompany((Company) session.get(Company.class, id));
+			Company company = (Company) session.get(Company.class, id);
+			company.addEmployee(employee);
+
 			session.saveOrUpdate(employee);
 			session.getTransaction().commit();
 			}catch(Exception e){

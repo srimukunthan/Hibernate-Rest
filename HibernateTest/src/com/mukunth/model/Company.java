@@ -2,6 +2,8 @@ package com.mukunth.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,7 +30,7 @@ public class Company {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "company_emp_map", joinColumns = @JoinColumn(name = "cmpny_id"), 
 	inverseJoinColumns = @JoinColumn(name = "emp_id"))
-	private Set<Employee> employee = new HashSet<Employee>();
+	private Collection<Employee> employee = new HashSet<Employee>();
 	public int getId() {
 		return id;
 	}
@@ -41,8 +43,12 @@ public class Company {
 	public String getContactNumber() {
 		return contactNumber;
 	}
-	public Set<Employee> getEmployee() {
+
+	public Collection<Employee> getEmployee() {
 		return employee;
+	}
+	public void setEmployee(Collection<Employee> employee) {
+		this.employee = employee;
 	}
 	public void setId(int id) {
 		this.id = id;
@@ -55,9 +61,6 @@ public class Company {
 	}
 	public void setContactNumber(String contactNumber) {
 		this.contactNumber = contactNumber;
-	}
-	public void setEmployee(Set<Employee> employee) {
-		this.employee = employee;
 	}
 	@Override
 	public String toString() {
@@ -75,6 +78,15 @@ public class Company {
 	}
 	public Company() {
 		super();
+	}
+	
+	public void addEmployee(Employee emp) {
+		if (employee==null) {
+			employee = new ArrayList<Employee>();
+		}
+		if (!employee.contains(emp)) {
+			employee.add(emp);
+		}
 	}
 	
 	
