@@ -16,30 +16,9 @@ public class Employee {
 	private int id;
 	private String name;
 	private String department;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "STOCK_ID", nullable = false)
-	private int companyId;
-	
-	public Employee(int id, String name, String department, int companyId) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.department = department;
-		this.companyId = companyId;
-	}
-	
-	public int getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
-	}
-
-	public Employee() {
-		super();
-	}
-
+	/*@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "Eid", nullable = false)*/
+	//private Company company;
 	public int getId() {
 		return id;
 	}
@@ -49,6 +28,9 @@ public class Employee {
 	public String getDepartment() {
 		return department;
 	}
+	/*public Company getCompany() {
+		return company;
+	}*/
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -58,10 +40,22 @@ public class Employee {
 	public void setDepartment(String department) {
 		this.department = department;
 	}
+	/*public void setCompany(Company company) {
+		this.company = company;
+	}*/
+	public Employee(int id, String name, String department) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.department = department;
+	}
+	public Employee() {
+		super();
+	}
 	@Override
 	public String toString() {
-		return "Person [id=" + id + ", name=" + name + ", department="
-				+ department + "]";
+		return "Employee [id=" + id + ", name=" + name + ", department="
+				+ department + ", company=" + "" + "]";
 	}
 	
 	

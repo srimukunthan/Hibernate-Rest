@@ -34,7 +34,7 @@ public class EmployeeService {
 	@GET
 	@Path("{employeeId}")
 	public Response getEmployee(@PathParam("employeeId") int employeeId) throws ResourceException {
-		Employee employee = EmployeeDaoImpl.getInstance().getEmployeeByID(employeeId, companyId);
+		Employee employee = EmployeeDaoImpl.getInstance().getEmployeeByID(employeeId);
 	return Response.status(200).entity(employee).build();
 	}
 	
@@ -42,15 +42,14 @@ public class EmployeeService {
 	@Path("{employeeId}")
 	public Response deleteEmployee(@PathParam("employeeId") int employeeId) throws ResourceException {
 		getEmployee(employeeId);
-		EmployeeDaoImpl.getInstance().deleteEmployeeByID(employeeId, companyId);
+		EmployeeDaoImpl.getInstance().deleteEmployeeByID(employeeId);
 			return Response.status(204).build();
 	}	
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createEmployee(Employee Employee) {
-		Employee.setCompanyId(companyId);
-		EmployeeDaoImpl.getInstance().createEmployeeByID(Employee);
+		EmployeeDaoImpl.getInstance().createEmployeeByID(Employee,companyId);
 			return Response.status(201).build();
 	}
 	
@@ -60,8 +59,7 @@ public class EmployeeService {
 	public Response updateEmployee(Employee employee, @PathParam("employeeId") int employeeId) throws ResourceException {
 		getEmployee(employeeId);
 		employee.setId(employeeId);
-		employee.setCompanyId(companyId);
-		EmployeeDaoImpl.getInstance().updateEmployeeByID(employee, companyId);
+		EmployeeDaoImpl.getInstance().updateEmployeeByID(employee,companyId);
 			return Response.status(204).build();
 	}
 

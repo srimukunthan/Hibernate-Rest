@@ -9,13 +9,13 @@ public interface EmployeeDao {
 	
 	List<Employee> getEmployee(int companyId);
 	
-	void deleteEmployeeByID(int employeeId, int companyId);
+	void deleteEmployeeByID(int employeeId);
 
-	void createEmployeeByID(Employee Employee);
+	void createEmployeeByID(Employee Employee, int companyId);
 
 	void updateEmployeeByID(Employee Employee, int companyId);
 
-	Employee getEmployeeByID(int employeeId, int companyId) throws ResourceException;
+	Employee getEmployeeByID(int employeeId) throws ResourceException;
 
 }
  

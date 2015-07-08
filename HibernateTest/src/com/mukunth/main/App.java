@@ -25,7 +25,7 @@ public class App {
             jettyServer.start();
             jettyServer.join();
         } finally {
-            //jettyServer.destroy();
+            jettyServer.destroy();
         }
     }
 }

@@ -6,8 +6,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Session;
+
 import com.mukunth.exceptions.ResourceException;
 import com.mukunth.general.ConnectionManager;
+import com.mukunth.main.HibernateUtil;
 import com.mukunth.model.Company;
 import com.mukunth.model.Employee;
 import com.mysql.jdbc.Connection;
@@ -27,7 +30,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	
 	@Override
 	public List<Employee> getEmployee(int companyID) {
-		Connection con = null;
+		/*Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		List<Employee> employeeList = new ArrayList<Employee>();
@@ -45,12 +48,25 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		} finally {
 			ConnectionManager.closeConnection(con);
 		}
+		return employeeList;*/
+		
+		List<Employee> employeeList = new ArrayList<Employee>();
+		try{
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			 
+			session.beginTransaction();
+			
+			employeeList = session.createCriteria(Employee.class).list();
+			session.getTransaction().commit();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		return employeeList;
 	}
 
 	@Override
-	public Employee getEmployeeByID(int id,int companyId) throws ResourceException {
-		Connection con = null;
+	public Employee getEmployeeByID(int id) throws ResourceException {
+		/*Connection con = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		con = (Connection) ConnectionManager.getConnection();
@@ -71,13 +87,26 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		} finally {
 			ConnectionManager.closeConnection(con);
 		}
+		*/
 		
+		Employee employee = null;
+		try{
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		 
+		session.beginTransaction();
+		
+		employee = (Employee) session.get(Employee.class, id);
+		System.out.println(employee.toString());
+		session.getTransaction().commit();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return employee;
 	}
 
 	@Override
-	public void deleteEmployeeByID(int id, int companyId) {
-		Connection con = null;
+	public void deleteEmployeeByID(int id) {
+		/*Connection con = null;
 		PreparedStatement pst = null;
 		con = (Connection) ConnectionManager.getConnection();
 		try {
@@ -89,12 +118,23 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			e.printStackTrace();
 		} finally {
 			ConnectionManager.closeConnection(con);
-		}
+		}*/
+		try{
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			 
+			session.beginTransaction();
+			Employee employee = null;
+			employee = (Employee) session.get(Employee.class, id);
+			session.delete(employee);
+			session.getTransaction().commit();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 	}
 
 	@Override
-	public void createEmployeeByID(Employee employee) {
-		Connection con = null;
+	public void createEmployeeByID(Employee employee, int id) {
+		/*Connection con = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		con = (Connection) ConnectionManager.getConnection();
@@ -113,12 +153,23 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			e.printStackTrace();
 		} finally {
 			ConnectionManager.closeConnection(con);
-		}
+		}*/
+		try{
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			 
+			session.beginTransaction();
+			System.out.println(employee.toString()+"----------");
+			//employee.setCompany((Company) session.get(Company.class, id));
+			session.saveOrUpdate(employee);
+			session.getTransaction().commit();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 	}
 
 	@Override
-	public void updateEmployeeByID(Employee employee, int companyId) {
-		Connection con = null;
+	public void updateEmployeeByID(Employee employee, int id) {
+		/*Connection con = null;
 		PreparedStatement pst = null;
 		con = (Connection) ConnectionManager.getConnection();
 		try {
@@ -132,7 +183,19 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			e.printStackTrace();
 		} finally {
 			ConnectionManager.closeConnection(con);
-		}
+		}*/
+		try{
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			 
+			session.beginTransaction();
+		//	employee.setCompany((Company) session.get(Company.class, id));
+			session.saveOrUpdate(employee);
+
+			System.out.println(employee.toString());
+			session.getTransaction().commit();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 	}
 
 }

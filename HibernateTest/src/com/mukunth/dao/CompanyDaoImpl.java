@@ -1,19 +1,17 @@
 package com.mukunth.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jetty.server.Authentication.User;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
+import org.hibernate.transform.Transformers;
 
 import com.mukunth.exceptions.ResourceException;
-import com.mukunth.general.ConnectionManager;
 import com.mukunth.main.HibernateUtil;
 import com.mukunth.model.Company;
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
 
 public class CompanyDaoImpl implements CompanyDao {
 	
@@ -29,7 +27,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	
 	@Override
 	public List<Company> getCompany() {
-		Connection con = null;
+		/*Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		List<Company> companyList = new ArrayList<Company>();
@@ -47,6 +45,26 @@ public class CompanyDaoImpl implements CompanyDao {
 		} finally {
 			ConnectionManager.closeConnection(con);
 		}
+		return companyList;*/
+		List<Company> companyList = new ArrayList<Company>();
+		try{
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			 
+			session.beginTransaction();
+			
+			Criteria cr = session.createCriteria(Company.class)
+				    .setProjection(Projections.projectionList()
+				      .add(Projections.property("id"), "id")
+				      .add(Projections.property("companyName"), "companyName")
+				      .add(Projections.property("hrPerson"), "hrPerson")
+				      .add(Projections.property("contactNumber"), "contactNumber"))
+				    .setResultTransformer(Transformers.aliasToBean(Company.class));
+			
+			companyList = cr.list();
+			session.getTransaction().commit();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		return companyList;
 	}
 
@@ -78,7 +96,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		 
 		session.beginTransaction();
 		
-		company = (Company) session.get(Company.class, 1);
+		company = (Company) session.get(Company.class, id);
 		System.out.println(company.toString());
 		session.getTransaction().commit();
 		}catch(Exception e){
@@ -89,7 +107,7 @@ public class CompanyDaoImpl implements CompanyDao {
 
 	@Override
 	public void deleteCompanyByID(int id) {
-		Connection con = null;
+		/*Connection con = null;
 		PreparedStatement pst = null;
 		con = (Connection) ConnectionManager.getConnection();
 		try {
@@ -100,7 +118,18 @@ public class CompanyDaoImpl implements CompanyDao {
 			e.printStackTrace();
 		} finally {
 			ConnectionManager.closeConnection(con);
-		}
+		}*/
+		try{
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			 
+			session.beginTransaction();
+			Company company = null;
+			company = (Company) session.get(Company.class, id);
+			session.delete(company);
+			session.getTransaction().commit();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 	}
 
 	@Override
@@ -142,7 +171,7 @@ public class CompanyDaoImpl implements CompanyDao {
 
 	@Override
 	public void updateCompanyByID(Company company) {
-		Connection con = null;
+		/*Connection con = null;
 		PreparedStatement pst = null;
 		con = (Connection) ConnectionManager.getConnection();
 		try {
@@ -156,7 +185,18 @@ public class CompanyDaoImpl implements CompanyDao {
 			e.printStackTrace();
 		} finally {
 			ConnectionManager.closeConnection(con);
-		}
+		}*/
+		try{
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			 
+			session.beginTransaction();
+			session.update(company);
+
+			System.out.println(company.toString());
+			session.getTransaction().commit();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 	}
 
 }
