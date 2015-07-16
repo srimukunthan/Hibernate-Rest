@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Employee {
 	@Id
@@ -16,9 +18,10 @@ public class Employee {
 	private int id;
 	private String name;
 	private String department;
-	/*@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Eid", nullable = false)*/
-	//private Company company;
+	@ManyToOne(fetch = FetchType.LAZY)
+	/*@JoinColumn(name = "Eid", nullable = false)*/
+	@JsonBackReference
+	private Company company;
 	public int getId() {
 		return id;
 	}
@@ -28,9 +31,9 @@ public class Employee {
 	public String getDepartment() {
 		return department;
 	}
-	/*public Company getCompany() {
+	public Company getCompany() {
 		return company;
-	}*/
+	}
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -40,9 +43,9 @@ public class Employee {
 	public void setDepartment(String department) {
 		this.department = department;
 	}
-	/*public void setCompany(Company company) {
+	public void setCompany(Company company) {
 		this.company = company;
-	}*/
+	}
 	public Employee(int id, String name, String department) {
 		super();
 		this.id = id;

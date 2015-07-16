@@ -3,6 +3,7 @@ package com.mukunth.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -45,7 +46,7 @@ public class CompanyService {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createCompany(Company company) throws SQLException {
+	public Response createCompany(@Valid Company company) throws SQLException {
 		CompanyDaoImpl.getInstance().createCompanyByID(company);
 			List<Company> companies = CompanyDaoImpl.getInstance().getCompany();
 			return Response.status(201).entity(companies).build();

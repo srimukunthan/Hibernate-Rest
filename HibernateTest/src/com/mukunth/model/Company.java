@@ -5,18 +5,14 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-
 import org.hibernate.validator.constraints.Length;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Company {
@@ -27,9 +23,10 @@ public class Company {
 	String companyName;
 	String hrPerson;
 	String contactNumber;
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "company_emp_map", joinColumns = @JoinColumn(name = "cmpny_id"), 
-	inverseJoinColumns = @JoinColumn(name = "emp_id"))
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="company")
+	/*@JoinTable(name = "company_emp_map", joinColumns = @JoinColumn(name = "cmpny_id"), 
+	inverseJoinColumns = @JoinColumn(name = "emp_id"))*/
+	@JsonManagedReference
 	private Collection<Employee> employee = new HashSet<Employee>();
 	public int getId() {
 		return id;
